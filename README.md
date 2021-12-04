@@ -30,11 +30,7 @@ There are two datasets in this package.
 install.packages("devtools")
 devtools::install_github("youqiy/linearmodel", build_vignettes = T)
 
-<<<<<<< HEAD
 # browse the tutorial
-=======
-# generate the tutorial
->>>>>>> 5a70e3952107a27ef737e8004ef77e7d890a1da4
 browseVignettes("linearmodel") 
 ```
 
