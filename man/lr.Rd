@@ -41,11 +41,8 @@ Generate linear regression model and perform basic analysis
 }
 \examples{
 # Prepare the data
-library(NHANES)
-library(dplyr)
-data(NHANES)
-data <- NHANES |> select("Age", "Race1", "Weight", "Height")
-data <- na.omit(data)
+data("NHANE")
+data <- NHANE
 
 # By default, the intercept is included, while the interactions are not.
 lr(Age~Weight+Height, data)

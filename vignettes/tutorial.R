@@ -1,15 +1,9 @@
 ## ----setup, include=FALSE-----------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
 library(linearmodel)
-library(NHANES)
-library(dplyr)
 
 ## -----------------------------------------------------------------------------
-data(NHANES)
-data <- NHANES |>
-  select("Age", "Race1", "Weight", "Height")
-
-data <- na.omit(data)
+data("NHANE")
+data <- NHANE
 head(data)
 dim(data)
 

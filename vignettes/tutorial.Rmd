@@ -9,25 +9,16 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-install.packages("knitr")
-install.packages("NHANES")
-install.packages("dplyr")
-knitr::opts_chunk$set(echo = TRUE)
 library(linearmodel)
-library(NHANES)
-library(dplyr)
 ```
 
-## Data: NHANES
+## Data: NHANE
 
-To explore the applications of our function, we will use a subset of a R built-in data in package(NHANES) `NHANES`.
+To explore the applications of our function, we will use a subset of a R built-in data in package(NHANES) `NHANES`, which is already included in our package.
 
 ```{r}
-data(NHANES)
-data <- NHANES |>
-  select("Age", "Race1", "Weight", "Height")
-
-data <- na.omit(data)
+data("NHANE")
+data <- NHANE
 head(data)
 dim(data)
 ```
