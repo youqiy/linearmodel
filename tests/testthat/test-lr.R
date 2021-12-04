@@ -1,5 +1,4 @@
 test_that("lr works", {
-  library(carData)
   data(Angell)
   expect_equal(lr(moral~hetero, Angell)$sigma, summary(lm(moral~hetero, Angell))$sigma)
   expect_equal(lr(moral~hetero+mobility, Angell, interact = TRUE)$sigma,
