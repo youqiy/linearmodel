@@ -1,5 +1,9 @@
 # linearmodel
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/youqiy/linearmodel/workflows/R-CMD-check/badge.svg)](https://github.com/youqiy/linearmodel/actions)
+<!-- badges: end -->
+
 ## Overview
 This R-package is designed for performing a linear regression model and some
 basic anaylses:
