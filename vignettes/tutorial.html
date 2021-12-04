@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Youqi Yang" />
+
+
+<title>Introduction to lr</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to lr</h1>
+<h4 class="author">Youqi Yang</h4>
+
+
+
+<div id="data-nhanes" class="section level2">
+<h2>Data: NHANES</h2>
+<p>To explore the applications of our function, we will use a subset of a R built-in data in package(NHANES) <code>NHANES</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(NHANES)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> NHANES <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Race1&quot;</span>, <span class="st">&quot;Weight&quot;</span>, <span class="st">&quot;Height&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(data)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##     Age Race1 Weight Height
+##   &lt;int&gt; &lt;fct&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1    34 White   87.4   165.
+## 2    34 White   87.4   165.
+## 3    34 White   87.4   165.
+## 4     4 Other   17     105.
+## 5    49 White   86.7   168.
+## 6     9 White   29.8   133.</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(data)</span></code></pre></div>
+<pre><code>## [1] 9634    4</code></pre>
+</div>
+<div id="multiple-linear-regression" class="section level2">
+<h2>Multiple linear regression</h2>
+<p>We first perform a regression model: <code>Age~Intercept+Weight+Height</code> in our function. Note that in this model, we include the intercept, and do not consider the interaction.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lm1<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Weight<span class="sc">+</span>Height, data)</span></code></pre></div>
+<p>And then check the accuracy of our function by existing functions in R.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lm1<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~</span>Weight<span class="sc">+</span>Height, data)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lm1<span class="fl">.2</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;y.fitted&quot;   &quot;residual&quot;   &quot;cov.matrix&quot; &quot;df&quot;         &quot;r.squared&quot; 
+## [6] &quot;sigma&quot;      &quot;f.result&quot;</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fitted values</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm1<span class="fl">.1</span><span class="sc">$</span>fitted.values), <span class="fu">as.numeric</span>(lm1<span class="fl">.2</span><span class="sc">$</span>y.fitted))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># conventional and internally studendized residuals</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm1<span class="fl">.1</span><span class="sc">$</span>residuals), <span class="fu">as.numeric</span>(lm1<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">rstandard</span>(lm1<span class="fl">.1</span>)), <span class="fu">as.numeric</span>(lm1<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">2</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm1<span class="fl">.1</span>)<span class="sc">$</span>coefficients), <span class="fu">as.numeric</span>(lm1<span class="fl">.2</span><span class="sc">$</span>cov.matrix))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># degree of freedom</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm1<span class="fl">.1</span>)<span class="sc">$</span>r.squared), <span class="fu">as.numeric</span>(lm1<span class="fl">.2</span><span class="sc">$</span>r.squared))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sigma</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm1<span class="fl">.1</span>)<span class="sc">$</span>sigma), <span class="fu">as.numeric</span>(lm1<span class="fl">.2</span><span class="sc">$</span>sigma))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># F-test</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">as.matrix</span>(<span class="fu">anova</span>(<span class="fu">lm</span>(Age<span class="sc">~</span><span class="dv">1</span>, data), lm1<span class="fl">.1</span>))[<span class="dv">2</span>, <span class="dv">5</span>]), <span class="fu">as.numeric</span>(lm1<span class="fl">.2</span><span class="sc">$</span>f.result[<span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Additionally, we check the efficiency of our function.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  lm1<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~</span>Weight<span class="sc">+</span>Height, data)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anova</span>(<span class="fu">lm</span>(Age<span class="sc">~</span><span class="dv">1</span>, data), lm1<span class="fl">.1</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rstandard</span>(lm1<span class="fl">.1</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.009   0.001   0.010</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(lm1<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Weight<span class="sc">+</span>Height, data))</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.272   0.118   0.390</code></pre>
+<p>We can conclude that our function does not improve the efficiency of the original ones.</p>
+</div>
+<div id="intercept" class="section level2">
+<h2>Intercept</h2>
+<p>We then perform a regression model without intercept: <code>Age~Weight+Height</code> in our function. Note that in this model, we still exclude the interaction.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>lm2<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Weight<span class="sc">+</span>Height, data, <span class="at">intercept =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>And then check the accuracy of our function by existing functions in R.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>lm2<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~-</span><span class="dv">1</span><span class="sc">+</span>Weight<span class="sc">+</span>Height, data)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lm2<span class="fl">.2</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;y.fitted&quot;   &quot;residual&quot;   &quot;cov.matrix&quot; &quot;df&quot;         &quot;r.squared&quot; 
+## [6] &quot;sigma&quot;      &quot;f.result&quot;</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fitted values</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm2<span class="fl">.1</span><span class="sc">$</span>fitted.values), <span class="fu">as.numeric</span>(lm2<span class="fl">.2</span><span class="sc">$</span>y.fitted))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># conventional and internally studendized residuals</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm2<span class="fl">.1</span><span class="sc">$</span>residuals), <span class="fu">as.numeric</span>(lm2<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">rstandard</span>(lm2<span class="fl">.1</span>)), <span class="fu">as.numeric</span>(lm2<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">2</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm2<span class="fl">.1</span>)<span class="sc">$</span>coefficients), <span class="fu">as.numeric</span>(lm2<span class="fl">.2</span><span class="sc">$</span>cov.matrix))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># degree of freedom</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm2<span class="fl">.1</span>)<span class="sc">$</span>r.squared), <span class="fu">as.numeric</span>(lm2<span class="fl">.2</span><span class="sc">$</span>r.squared))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sigma</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm2<span class="fl">.1</span>)<span class="sc">$</span>sigma), <span class="fu">as.numeric</span>(lm2<span class="fl">.2</span><span class="sc">$</span>sigma))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Additionally, we check the efficiency of our function.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  lm2<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~</span>Weight<span class="sc">+</span>Height, data)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anova</span>(lm2<span class="fl">.1</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rstandard</span>(lm2<span class="fl">.1</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.008   0.001   0.008</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(lm2<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Weight<span class="sc">+</span>Height, data, <span class="at">intercept =</span> <span class="cn">FALSE</span>))</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.187   0.113   0.301</code></pre>
+<p>We can conclude that our function does not improve the efficiency of the original ones.</p>
+</div>
+<div id="interaction" class="section level2">
+<h2>Interaction</h2>
+<p>We then perform a regression model with interaction: <code>Age~Intercept+Weight+Height+Weight*Height</code> in our function. Note that in this model, we still include the intercept.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>lm3<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Weight<span class="sc">+</span>Height, data, <span class="at">interact =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>And then check the accuracy of our function by existing functions in R.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>lm3<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~</span>Weight<span class="sc">*</span>Height, data)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lm3<span class="fl">.2</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;y.fitted&quot;   &quot;residual&quot;   &quot;cov.matrix&quot; &quot;df&quot;         &quot;r.squared&quot; 
+## [6] &quot;sigma&quot;      &quot;f.result&quot;</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fitted values</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm3<span class="fl">.1</span><span class="sc">$</span>fitted.values), <span class="fu">as.numeric</span>(lm3<span class="fl">.2</span><span class="sc">$</span>y.fitted))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># conventional and internally studendized residuals</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm3<span class="fl">.1</span><span class="sc">$</span>residuals), <span class="fu">as.numeric</span>(lm3<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">rstandard</span>(lm3<span class="fl">.1</span>)), <span class="fu">as.numeric</span>(lm3<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">2</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm3<span class="fl">.1</span>)<span class="sc">$</span>coefficients), <span class="fu">as.numeric</span>(lm3<span class="fl">.2</span><span class="sc">$</span>cov.matrix))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># degree of freedom</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm3<span class="fl">.1</span>)<span class="sc">$</span>r.squared), <span class="fu">as.numeric</span>(lm3<span class="fl">.2</span><span class="sc">$</span>r.squared))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sigma</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm3<span class="fl">.1</span>)<span class="sc">$</span>sigma), <span class="fu">as.numeric</span>(lm3<span class="fl">.2</span><span class="sc">$</span>sigma))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># F-test</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">as.matrix</span>(<span class="fu">anova</span>(<span class="fu">lm</span>(Age<span class="sc">~</span><span class="dv">1</span>, data), lm3<span class="fl">.1</span>))[<span class="dv">2</span>, <span class="dv">5</span>]), <span class="fu">as.numeric</span>(lm3<span class="fl">.2</span><span class="sc">$</span>f.result[<span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Additionally, we check the efficiency of our function.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  lm3<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~</span>Weight<span class="sc">*</span>Height, data)</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anova</span>(<span class="fu">lm</span>(Age<span class="sc">~</span><span class="dv">1</span>, data), lm3<span class="fl">.1</span>)</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rstandard</span>(lm3<span class="fl">.1</span>)</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.009   0.000   0.009</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(lm3<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Weight<span class="sc">+</span>Height, data, <span class="at">interact =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.260   0.112   0.372</code></pre>
+<p>We can conclude that our function does not improve the efficiency of the original ones.</p>
+</div>
+<div id="reference-cell-coding" class="section level2">
+<h2>Reference cell coding</h2>
+<p>Regarding the category variable <code>Race1</code>, we first consider reference cell coding to examine its relationship with <code>Age</code>.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>lm4<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Race1, data, <span class="at">category =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p>And then check the accuracy of our function by existing functions in R.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>lm4<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~</span><span class="fu">factor</span>(Race1), data)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lm4<span class="fl">.2</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;y.fitted&quot;   &quot;residual&quot;   &quot;cov.matrix&quot; &quot;df&quot;         &quot;r.squared&quot; 
+## [6] &quot;sigma&quot;      &quot;f.result&quot;</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fitted values</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm4<span class="fl">.1</span><span class="sc">$</span>fitted.values), <span class="fu">as.numeric</span>(lm4<span class="fl">.2</span><span class="sc">$</span>y.fitted))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># conventional and internally studendized residuals</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm4<span class="fl">.1</span><span class="sc">$</span>residuals), <span class="fu">as.numeric</span>(lm4<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">rstandard</span>(lm4<span class="fl">.1</span>)), <span class="fu">as.numeric</span>(lm4<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">2</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients (Note that the order of coefficients is different)</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm4<span class="fl">.1</span>)<span class="sc">$</span>coefficients[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), ]), <span class="fu">as.numeric</span>(lm4<span class="fl">.2</span><span class="sc">$</span>cov.matrix[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), ]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm4<span class="fl">.1</span>)<span class="sc">$</span>coefficients[<span class="dv">4</span>, ]), <span class="fu">as.numeric</span>(lm4<span class="fl">.2</span><span class="sc">$</span>cov.matrix[<span class="dv">5</span>, ]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm4<span class="fl">.1</span>)<span class="sc">$</span>coefficients[<span class="dv">5</span>, ]), <span class="fu">as.numeric</span>(lm4<span class="fl">.2</span><span class="sc">$</span>cov.matrix[<span class="dv">4</span>, ]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># degree of freedom</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm4<span class="fl">.1</span>)<span class="sc">$</span>r.squared), <span class="fu">as.numeric</span>(lm4<span class="fl">.2</span><span class="sc">$</span>r.squared))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sigma</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm4<span class="fl">.1</span>)<span class="sc">$</span>sigma), <span class="fu">as.numeric</span>(lm4<span class="fl">.2</span><span class="sc">$</span>sigma))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># F-test</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">as.matrix</span>(<span class="fu">anova</span>(<span class="fu">lm</span>(Age<span class="sc">~</span><span class="dv">1</span>, data), lm4<span class="fl">.1</span>))[<span class="dv">2</span>, <span class="dv">5</span>]), <span class="fu">as.numeric</span>(lm4<span class="fl">.2</span><span class="sc">$</span>f.result[<span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Additionally, we check the efficiency of our function.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  lm4<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~</span><span class="fu">factor</span>(Race1), data)</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anova</span>(<span class="fu">lm</span>(Age<span class="sc">~</span><span class="dv">1</span>, data), lm4<span class="fl">.1</span>)</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rstandard</span>(lm4<span class="fl">.1</span>)</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.010   0.001   0.011</code></pre>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(lm4<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Race1, data, <span class="at">category =</span> <span class="dv">1</span>))</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.366   0.112   0.478</code></pre>
+<p>We can conclude that our function does not improve the efficiency of the original ones.</p>
+</div>
+<div id="cell-means-coding" class="section level2">
+<h2>Cell means coding</h2>
+<p>Regarding the category variable <code>Race1</code>, we then consider cell means coding to examine its relationship with <code>Age</code>.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>lm5<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Race1, data, <span class="at">category =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>And then check the accuracy of our function by existing functions in R.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>lm5<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~-</span><span class="dv">1</span><span class="sc">+</span><span class="fu">factor</span>(Race1), data)</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lm5<span class="fl">.2</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;y.fitted&quot;   &quot;residual&quot;   &quot;cov.matrix&quot; &quot;df&quot;         &quot;r.squared&quot; 
+## [6] &quot;sigma&quot;      &quot;f.result&quot;</code></pre>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fitted values</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm5<span class="fl">.1</span><span class="sc">$</span>fitted.values), <span class="fu">as.numeric</span>(lm5<span class="fl">.2</span><span class="sc">$</span>y.fitted))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># conventional and internally studendized residuals</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(lm5<span class="fl">.1</span><span class="sc">$</span>residuals), <span class="fu">as.numeric</span>(lm5<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">rstandard</span>(lm5<span class="fl">.1</span>)), <span class="fu">as.numeric</span>(lm5<span class="fl">.2</span>[[<span class="st">&quot;residual&quot;</span>]][, <span class="dv">2</span>]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients (Note that the order of coefficients is different)</span></span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm5<span class="fl">.1</span>)<span class="sc">$</span>coefficients[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), ]), <span class="fu">as.numeric</span>(lm5<span class="fl">.2</span><span class="sc">$</span>cov.matrix[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), ]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm5<span class="fl">.1</span>)<span class="sc">$</span>coefficients[<span class="dv">4</span>, ]), <span class="fu">as.numeric</span>(lm5<span class="fl">.2</span><span class="sc">$</span>cov.matrix[<span class="dv">5</span>, ]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm5<span class="fl">.1</span>)<span class="sc">$</span>coefficients[<span class="dv">5</span>, ]), <span class="fu">as.numeric</span>(lm5<span class="fl">.2</span><span class="sc">$</span>cov.matrix[<span class="dv">4</span>, ]))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co"># degree of freedom</span></span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm5<span class="fl">.1</span>)<span class="sc">$</span>r.squared), <span class="fu">as.numeric</span>(lm5<span class="fl">.2</span><span class="sc">$</span>r.squared))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sigma</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(lm5<span class="fl">.1</span>)<span class="sc">$</span>sigma), <span class="fu">as.numeric</span>(lm5<span class="fl">.2</span><span class="sc">$</span>sigma))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Additionally, we check the efficiency of our function.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>  lm5<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age<span class="sc">~--</span><span class="dv">1</span><span class="sc">+</span><span class="fu">factor</span>(Race1), data)</span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anova</span>(lm5<span class="fl">.1</span>)</span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rstandard</span>(lm5<span class="fl">.1</span>)</span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##    0.01    0.00    0.01</code></pre>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(lm5<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lr</span>(Age<span class="sc">~</span>Race1, data, <span class="at">category =</span> <span class="dv">2</span>))</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.407   0.135   0.544</code></pre>
+<p>We can conclude that our function does not improve the efficiency of the original ones.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
