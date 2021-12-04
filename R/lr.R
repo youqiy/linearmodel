@@ -20,21 +20,27 @@
 #'@return f.result: a vector of F-test regarding the whole model
 #'
 #'@examples
-#'data(Angell)
+#'# Prepare the data
+#'library(NHANES)
+#'library(dplyr)
+#'data(NHANES)
+#'data <- NHANES |> select("Age", "Race1", "Weight", "Height")
+#'data <- na.omit(data)
+#'
 #'# By default, the intercept is included, while the interactions are not.
-#'lr(moral~hetero+mobility, data = Angell)
+#'lr(Age~Weight+Height, data)
 #'
 #'# When intercept = FALSE, the model would not include the intercept.
-#'lr(moral~hetero+mobility, data = Angell, intercept = FALSE)
+#'lr(Age~Weight+Height, data, intercept = FALSE)
 #'
 #'# When interaction = TRUE, the model would include the interactions between covariates.
-#'lr(moral~hetero+mobility, data = Angell, interact = TRUE)
+#'lr(Age~Weight+Height, data, interact = TRUE)
 #'
 #'# Regarding the categorical variables, if category = 1, a reference cell coding is performed.
-#'lr(moral~region, data = Angell, category = 1)
+#'lr(Age~Race1, data, category = 1)
 #'
 #'# If category = 2, then a cell means coding is performed.
-#'lr(moral~region, data = Angell, category = 2)
+#'lr(Age~Race1, data, category = 2)
 #'
 #'@export
 #'
