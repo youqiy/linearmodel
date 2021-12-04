@@ -31,7 +31,7 @@ install.packages("devtools")
 devtools::install_github("youqiy/linearmodel", build_vignettes = T)
 
 # generate the tutorial
-browseVignettes("multilinear") 
+browseVignettes("linearmodel") 
 ```
 
 ## Usage
