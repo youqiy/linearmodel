@@ -19,6 +19,11 @@ and f-test.
 A unique design in this package is that it can be used in model without 
 intercept, and model with interactions. Also, the function can be applied for categorical variables.
 
+There are two datasets in this package.
+
+* `Angell` The data frame has 43 rows and 4 columns.
+* `NHANE` The data frame has 9634 rows and 4 columns.
+
 ## Installation
 ```
 # install packages from github
