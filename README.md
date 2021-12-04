@@ -4,6 +4,10 @@
 [![R-CMD-check](https://github.com/youqiy/linearmodel/workflows/R-CMD-check/badge.svg)](https://github.com/youqiy/linearmodel/actions)
 <!-- badges: end -->
 
+<!-- badges: start -->
+[![codecov](https://codecov.io/gh/youqiy/linearmodel/branch/main/graph/badge.svg?token=7MSQX0TW9U)](https://codecov.io/gh/youqiy/linearmodel)
+<!-- badges: end -->
+
 ## Overview
 This R-package is designed for performing a linear regression model and some
 basic anaylses:

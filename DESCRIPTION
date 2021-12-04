@@ -5,6 +5,7 @@ Version: 0.1.0
 Author: person(given = "Youqi",
            family = "Yang",
            email = "youqi@umich.edu")
+Maintainer: Youqi Yang <youqi@umich.edu>
 Description: This package is designed for linear regression model.
 License: GPL-3
 Encoding: UTF-8
